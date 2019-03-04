@@ -1,0 +1,26 @@
+{
+  "name": "node-autopath-config",
+  "version": "1.0.0",
+  "description": "Auto check for pathes as ~, /etc/, ./ in turn, and load config content.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikewootc/node-autopath-config.git"
+  },
+  "keywords": [
+    "node",
+    "config"
+  ],
+  "author": "Mike Woo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikewootc/node-autopath-config/issues"
+  },
+  "homepage": "https://github.com/mikewootc/node-autopath-config#readme",
+  "dependencies": {
+    "cpclog": "^1.0.13"
+  }
+}
