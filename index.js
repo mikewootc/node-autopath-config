@@ -17,51 +17,54 @@ exports.loadConfig = (configPath, options) => {
     let config = null;
 
     logger.debug('configPath:', configPath);
-
-    // Compose config searching pathes
-    if (path.isAbsolute(configPath) || options && options.accuratePath) {
-        lstConfigPathes.push(configPath);
-    } else { // Relative path
-        if (configPath[0] == '.') { // Already prefixed by '.'
-            lstConfigPathes.push(process.env.HOME + '/' + configPath);
-        } else {
-            // Add prefix '.' for user's HOME dir.
-            lstConfigPathes.push(process.env.HOME + '/.' + configPath);
-        }
-        lstConfigPathes.push('/etc/' + configPath);
-        lstConfigPathes.push(process.env.PWD + '/' + configPath);
-        logger.debug(Logger.BLUE_B, 'PWD', process.env.PWD);
-    }
-    logger.debug('    lstConfigPathes:', lstConfigPathes);
-
-    // Check for config pathes to look at existed config file.
-    for (let i = 0; i < lstConfigPathes.length; i++) {
-        let p = lstConfigPathes[i];
-
-        if (!fs.existsSync(p)) {
-            continue;
-        }
-
-        let stat = fs.statSync(p);
-        if (stat.isDirectory()) {
-            p += '/index.' + extension;
-        }
-
-        stat = fs.statSync(p);
-        if (stat.isFile()) {
-            logger.debug(Logger.GREEN, 'Found config file:', p);
-            if (extension == 'json') {
-                let text = fs.readFileSync(p, 'utf8');
-                config = JSON.parse(text);
+    try {
+        // Compose config searching pathes
+        if (path.isAbsolute(configPath) || options && options.accuratePath) {
+            lstConfigPathes.push(configPath);
+        } else { // Relative path
+            if (configPath[0] == '.') { // Already prefixed by '.'
+                lstConfigPathes.push(process.env.HOME + '/' + configPath);
             } else {
-                config = require(p);
+                // Add prefix '.' for user's HOME dir.
+                lstConfigPathes.push(process.env.HOME + '/.' + configPath);
+            }
+            lstConfigPathes.push('/etc/' + configPath);
+            lstConfigPathes.push(process.env.PWD + '/' + configPath);
+            logger.debug(Logger.BLUE_B, 'PWD', process.env.PWD);
+        }
+        logger.debug('    lstConfigPathes:', lstConfigPathes);
+
+        // Check for config pathes to look at existed config file.
+        for (let i = 0; i < lstConfigPathes.length; i++) {
+            let p = lstConfigPathes[i];
+
+            if (!fs.existsSync(p)) {
+                continue;
             }
 
-            break;
-        }
-    }
+            let stat = fs.statSync(p);
+            if (stat.isDirectory()) {
+                p += '/index.' + extension;
+            }
 
-    return config;
+            stat = fs.statSync(p);
+            if (stat.isFile()) {
+                logger.debug(Logger.GREEN, 'Found config file:', p);
+                if (extension == 'json') {
+                    let text = fs.readFileSync(p, 'utf8');
+                    config = JSON.parse(text);
+                } else {
+                    config = require(p);
+                }
+
+                break;
+            }
+        }
+
+        return config;
+    } catch(err) {
+        throw err;
+    }
 }
 
 
