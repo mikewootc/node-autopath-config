@@ -6,7 +6,7 @@ const path      = require('path');
 const fs        = require('fs');
 const Logger    = require('cpclog');
 
-const logger = Logger.createWrapper('config', Logger.LEVEL_INFO);
+const logger = Logger.createWrapper('config', Logger.LEVEL_DEBUG);
 
 // options:
 //      * isJson: config file is a json file
@@ -29,7 +29,7 @@ exports.loadConfig = (configPath, options) => {
                 lstConfigPathes.push(process.env.HOME + '/.' + configPath);
             }
             lstConfigPathes.push('/etc/' + configPath);
-            lstConfigPathes.push(process.env.PWD + '/' + configPath);
+            lstConfigPathes.push(path.join(path.resolve(), configPath));
             logger.debug(Logger.BLUE_B, 'PWD', process.env.PWD);
         }
         logger.debug('    lstConfigPathes:', lstConfigPathes);
