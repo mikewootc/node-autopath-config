@@ -16,6 +16,10 @@ exports.loadConfig = (configPath, options) => {
     let lstConfigPathes = [];
     let config = null;
 
+    if (options && options.quiet) {
+        Logger.adjustTag('config', Logger.LEVEL_ERROR);
+    }
+
     logger.debug('configPath:', configPath);
     try {
         // Compose config searching pathes
