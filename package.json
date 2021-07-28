@@ -1,6 +1,6 @@
 {
   "name": "node-autopath-config",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Auto check for pathes as ~, /etc/, ./ in turn, and load config content.",
   "main": "index.js",
   "scripts": {
